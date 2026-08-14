@@ -35,7 +35,7 @@ create table comanda(
      id serial primary key,
      id_usuario int not null,
      id_restaurante int not null,
-     cliente_nome varchar(50) not null,
+     nome_cliente varchar(50) not null,
      data date not null,
      horario time not null,
      fechada boolean not default false,
@@ -52,4 +52,14 @@ create table comanda_produto(
      foreign key(id_produto) references produto(id)
 );
 
+create table lancamento(
+     id serial primary key,
+     id_comanda int not null,
+     dia_hora timestamp not null,
+     foreign key(id_comanda) references comanda(id)
+);
+
+create table compras(
+     
+)
 
