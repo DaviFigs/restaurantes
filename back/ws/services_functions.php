@@ -12,7 +12,7 @@
 function autenticacao($params)
 {
     try {
-        // TODO: Lógica de autenticação
+        
 
         return [
             'info' => [

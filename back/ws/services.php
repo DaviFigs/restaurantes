@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/funcoes.php';
+require_once __DIR__ . '../../phpConfig.php';
+require_once __DIR__ . '/services_functions.php';  
 
 $request = $_GET['request'] ?? '';
 
@@ -33,13 +33,19 @@ $retorno = [
 
 try {
     if (!empty($dadosin)) {
-        $dados = json_decode($dadosin, true);
+        $dados = json_decode($dadosin, true)['dados'];
+        error_log(var_export($dados, true));
+        $servico = $dados['head']['servico'];
+        $chave = $dados['head']['chave'];
 
+        if(empty($chave) && $servico != 'autenticacao'){
+            throw new Exception("É necessária uma chave de autenticação para este serviço!");
+        }
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new Exception('JSON inválido: ' . json_last_error_msg());
         }
     }
-    switch ($request) {
+    switch ($servico) {
         case 'autenticacao':
             $retorno = call_user_func('autenticacao', $dados);
             break;

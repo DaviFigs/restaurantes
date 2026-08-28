@@ -12,13 +12,8 @@ define('ENVIRONMENT', 'development');
 
 define('DEBUG', ENVIRONMENT === 'development');
 
-
-// ============================================================
-// CAMINHOS DO PROJETO
-// ============================================================
-
-define('BASE_PATH', dirname(__DIR__));
-
+define('BASE_PATH', __DIR__);
+ 
 define('CONFIG_PATH', BASE_PATH . '/config');
 define('API_PATH', BASE_PATH . '/api');
 define('CONTROLLER_PATH', BASE_PATH . '/controllers');
@@ -59,7 +54,7 @@ define('DB_PASS', 'senha');
 // CONFIGURAÇÕES DA APLICAÇÃO
 // ============================================================
 
-define('APP_NAME', 'Minha API');
+define('APP_NAME', 'MesaOne');
 
 define('APP_VERSION', '1.0.0');
 

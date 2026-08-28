@@ -52,14 +52,22 @@ create table comanda_produto(
      foreign key(id_produto) references produto(id)
 );
 
-create table lancamento(
+create table comanda_lancamento(
      id serial primary key,
      id_comanda int not null,
      dia_hora timestamp not null,
      foreign key(id_comanda) references comanda(id)
 );
 
-create table compras(
-     
-)
+create table tokens(
+     id serial primary key,
+     token varchar(256) not null,
+     id_restaurante int not null,
+     id_usuario int not null,
+     criacao timestamp  default now(),
+     foreign key(id_restaurante) references restaurante(id),
+     foreign key(id_usuario) references usuario(id)
+);
+
+
 
