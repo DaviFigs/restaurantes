@@ -56,7 +56,7 @@ function buscas_dados_via_chave($chave){
             throw new Exception("Nenhum usuário encontrado para a chave fornecida.");
         }
         return [
-            'dados' => $dados,
+            'dados_usuario' => $dados,
             'registros' => $statement->rowCount(),
             'erro' => 0
         ];

@@ -35,7 +35,6 @@ $retorno = [
 try {
     if (!empty($dadosin)) {
         $dados = json_decode($dadosin, true)['dados'];
-        error_log(var_export($dados, true));
         $servico = $dados['head']['servico'];
         $chave = $dados['head']['chave'];
 
@@ -47,7 +46,7 @@ try {
             if($dados_usuario['registros'] === 0){
                 throw new Exception("Chave de autenticação inválida ou expirada!");
             }
-            $dados['usuario'] = $dados_usuario['dados'];
+            $dados['usuario'] = $dados_usuario['dados_usuario'];
         }
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new Exception('JSON inválido: ' . json_last_error_msg());
