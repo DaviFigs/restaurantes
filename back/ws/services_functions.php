@@ -1,17 +1,16 @@
 <?php
 
-/**
- * funcoes.php
- * Arquivo com as funções chamadas via call_user_func no services.php
- */
-
-// ============================================================
-// USUÁRIOS
-// ============================================================
+require_once __DIR__ . '/../phpConfig.php';
+require_once BASE_PATH . '/models/Usuario.class.php';
+require_once BASE_PATH . '/models/Restaurante.class.php';
+require_once BASE_PATH . '/models/Comanda.class.php';
+require_once BASE_PATH . '/models/Produto.class.php';
+require_once BASE_PATH . '/models/Lancamento.class.php';
 
 function autenticacao($params)
 {
     try {
+        
         
 
         return [
@@ -40,7 +39,7 @@ function autenticacao($params)
 function prep_salvar_usuario($params)
 {
     try {
-        // TODO: Lógica para salvar/editar usuário
+        // TOD: Lógica para salvar/editar usuário
 
         return [
             'info' => [
@@ -288,3 +287,250 @@ function prep_excluir_restaurante($params)
         ];
     }
 }
+
+function prep_salvar_produto($params)
+{
+    try {
+        // TODO: Lógica para excluir restaurante
+
+        return [
+            'info' => [
+                [
+                    'registros' => 1,
+                    'cdg_erro'  => 0,
+                    'msg'       => 'Restaurante excluído com sucesso'
+                ]
+            ]
+        ];
+    } catch (Exception $e) {
+        return [
+            'info' => [
+                [
+                    'registros' => 0,
+                    'cdg_erro'  => $e->getCode() ?: 1,
+                    'msg'       => $e->getMessage()
+                ]
+            ]
+        ];
+    }
+}
+
+function prep_listar_produtos($params)
+{
+    try {
+        // TODO: Lógica para listar produtos
+
+        return [
+            'info' => [
+                [
+                    'registros' => 1,
+                    'cdg_erro'  => 0,
+                    'msg'       => 'Restaurante excluído com sucesso'
+                ]
+            ]
+        ];
+    } catch (Exception $e) {
+        return [
+            'info' => [
+                [
+                    'registros' => 0,
+                    'cdg_erro'  => $e->getCode() ?: 1,
+                    'msg'       => $e->getMessage()
+                ]
+            ]
+        ];
+    }
+}
+
+function prep_buscar_produto($params)
+{
+    try {
+        // TODO: Lógica para buscar produto
+
+        return [
+            'info' => [
+                [
+                    'registros' => 1,
+                    'cdg_erro'  => 0,
+                    'msg'       => 'Restaurante excluído com sucesso'
+                ]
+            ]
+        ];
+    } catch (Exception $e) {
+        return [
+            'info' => [
+                [
+                    'registros' => 0,
+                    'cdg_erro'  => $e->getCode() ?: 1,
+                    'msg'       => $e->getMessage()
+                ]
+            ]
+        ];
+    }
+}
+
+function prep_excluir_produto($params)
+{
+    try {
+        // TODO: Lógica para excluir produto
+
+        return [
+            'info' => [
+                [
+                    'registros' => 1,
+                    'cdg_erro'  => 0,
+                    'msg'       => 'Produto excluído com sucesso'
+                ]
+            ]
+        ];
+    } catch (Exception $e) {
+        return [
+            'info' => [
+                [
+                    'registros' => 0,
+                    'cdg_erro'  => $e->getCode() ?: 1,
+                    'msg'       => $e->getMessage()
+                ]
+            ]
+        ];
+    }
+}
+
+function prep_abrir_comanda($params)
+{
+    try {
+        // TODO: Lógica para abrir comanda  
+
+        return [
+            'info' => [
+                [
+                    'registros' => 1,
+                    'cdg_erro'  => 0,
+                    'msg'       => 'Comanda aberta com sucesso'
+                ]
+            ]
+        ];
+    } catch (Exception $e) {
+        return [
+            'info' => [
+                [
+                    'registros' => 0,
+                    'cdg_erro'  => $e->getCode() ?: 1,
+                    'msg'       => $e->getMessage()
+                ]
+            ]
+        ];
+    }
+}
+
+
+function prep_listar_comandas($params)
+{
+    try {
+        // TODO: Lógica para listar comandas
+
+        return [
+            'info' => [
+                [
+                    'registros' => 1,
+                    'cdg_erro'  => 0,
+                    'msg'       => 'Comandas listadas com sucesso'
+                ]
+            ]
+        ];
+    } catch (Exception $e) {
+        return [
+            'info' => [
+                [
+                    'registros' => 0,
+                    'cdg_erro'  => $e->getCode() ?: 1,
+                    'msg'       => $e->getMessage()
+                ]
+            ]
+        ];
+    }
+}
+
+function prep_buscar_comanda($params)
+{
+    try {
+        // TODO: Lógica para buscar comanda
+
+        return [
+            'info' => [
+                [
+                    'registros' => 1,
+                    'cdg_erro'  => 0,
+                    'msg'       => 'Restaurante excluído com sucesso'
+                ]
+            ]
+        ];
+    } catch (Exception $e) {
+        return [
+            'info' => [
+                [
+                    'registros' => 0,
+                    'cdg_erro'  => $e->getCode() ?: 1,
+                    'msg'       => $e->getMessage()
+                ]
+            ]
+        ];
+    }
+}
+
+
+function prep_excluir_comanda($params)
+{
+    try {
+        // TODO: Lógica para excluir comanda
+
+        return [
+            'info' => [
+                [
+                    'registros' => 1,
+                    'cdg_erro'  => 0,
+                    'msg'       => 'Comanda excluída com sucesso'
+                ]
+            ]
+        ];
+    } catch (Exception $e) {
+        return [
+            'info' => [
+                [
+                    'registros' => 0,
+                    'cdg_erro'  => $e->getCode() ?: 1,
+                    'msg'       => $e->getMessage()
+                ]
+            ]
+        ];
+    }
+}
+
+
+function prep_fechar_comanda($params)
+{
+    try {
+        // TODO: Lógica para fechar comanda
+
+        return [
+            'info' => [
+                [
+                    'registros' => 1,
+                    'cdg_erro'  => 0,
+                    'msg'       => 'Comanda fechada com sucesso'
+                ]
+            ]
+        ];
+    } catch (Exception $e) {
+        return [
+            'info' => [
+                [
+                    'registros' => 0,
+                    'cdg_erro'  => $e->getCode() ?: 1,
+                    'msg'       => $e->getMessage()
+                ]
+            ]
+        ];
+    }
+}
+

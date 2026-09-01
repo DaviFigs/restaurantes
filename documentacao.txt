@@ -1,0 +1,42 @@
+
+AQUI FICARÁ A DOCUMENTAÇÃO DE CHAMADA DE TODOS OS SERVIÇOS DESSA API
+
+
+//autenticacao
+{
+    "dados":{
+        "head":{
+            "chave":"",
+            "servico":"autenticacao"   
+        },
+        "data":{
+            "restaurante":"berinjelas",
+            "usuario":"admin",
+            "senha":"admin"
+        }
+
+    }
+}
+
+
+//salva_usuario
+{
+    "dados":{
+        "head":{
+            "chave":"qwergq3goiqbhnfgu89o1h3gr",
+            "servico":"salvar_usuario"   
+        },
+        "data":{
+            "usuario":"carlos",
+            "senha":"1234",
+            "tipo":"admin"
+        }
+
+    }
+}
+
+
+
+
+
+

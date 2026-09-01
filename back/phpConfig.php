@@ -45,9 +45,9 @@ define('FRONTEND_URL', 'http://localhost:5173');
 
 define('DB_HOST', 'localhost');
 define('DB_PORT', '5432');
-define('DB_NAME', 'meu_banco');
+define('DB_NAME', 'restaurantes');
 define('DB_USER', 'postgres');
-define('DB_PASS', 'senha');
+define('DB_PASS', 'postgres');
 
 
 // ============================================================

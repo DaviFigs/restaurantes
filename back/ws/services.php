@@ -12,8 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-require_once __DIR__ . '../../phpConfig.php';
+require_once __DIR__ . '/../phpConfig.php';
 require_once __DIR__ . '/services_functions.php';  
+require_once BASE_PATH . '/geral/funcoes_diversas.php';
 
 $request = $_GET['request'] ?? '';
 
@@ -40,6 +41,13 @@ try {
 
         if(empty($chave) && $servico != 'autenticacao'){
             throw new Exception("É necessária uma chave de autenticação para este serviço!");
+        }
+        else{
+            $dados_usuario = buscas_dados_via_chave($chave);
+            if($dados_usuario['registros'] === 0){
+                throw new Exception("Chave de autenticação inválida ou expirada!");
+            }
+            $dados['usuario'] = $dados_usuario['dados'];
         }
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new Exception('JSON inválido: ' . json_last_error_msg());
@@ -84,6 +92,33 @@ try {
 
         case 'excluir_restaurante':
             $retorno = call_user_func('prep_excluir_restaurante', $dados);
+            break;
+        case 'salvar_produto':
+            $retorno = call_user_func('prep_salvar_produto', $dados);
+            break;
+        case 'listar_produtos':
+            $retorno = call_user_func('prep_listar_produtos', $dados);
+            break;
+        case 'buscar_produto':
+            $retorno = call_user_func('prep_buscar_produto', $dados);   
+            break;
+        case 'excluir_produto':
+            $retorno = call_user_func('prep_excluir_produto', $dados);
+            break;
+        case 'abrir_comanda':
+            $retorno = call_user_func('prep_abrir_comanda', $dados);
+            break;
+        case 'listar_comandas':
+            $retorno = call_user_func('prep_listar_comandas', $dados);
+            break;
+        case 'buscar_comanda':
+            $retorno = call_user_func('prep_buscar_comanda', $dados);
+            break;
+        case 'excluir_comanda':
+            $retorno = call_user_func('prep_excluir_comanda', $dados);
+            break;
+        case 'fechar_comanda':
+            $retorno = call_user_func('prep_fechar_comanda', $dados);
             break;
 
         default:
