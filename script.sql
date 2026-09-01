@@ -50,10 +50,12 @@ create table comanda(
      id_usuario int not null,
      id_restaurante int not null,
      nome_cliente varchar(50) not null,
-     data date not null,
-     horario time not null,
+     data_abertura date not null,
+     hora_abertura time not null,
+     data_hora_fechamento timestamp,
      fechada boolean not null default false,
      valor_total numeric(15,2) default 0,
+     num_mesa int,
      foreign key(id_usuario) references usuario(id),
      foreign key(id_restaurante) references restaurante(id)
 );
@@ -62,6 +64,7 @@ create table comanda_produto(
      id serial primary key,
      id_comanda int not null,
      id_produto int not null,
+     data_hora timestamp not null,
      foreign key(id_comanda) references comanda(id),
      foreign key(id_produto) references produto(id)
 );
@@ -69,7 +72,7 @@ create table comanda_produto(
 create table comanda_lancamento(
      id serial primary key,
      id_comanda int not null,
-     dia_hora timestamp not null,
+     data_hora timestamp not null,
      foreign key(id_comanda) references comanda(id)
 );
 
@@ -84,6 +87,3 @@ CREATE TABLE tokens (
     FOREIGN KEY (id_restaurante) REFERENCES restaurante(id),
     FOREIGN KEY (id_usuario) REFERENCES usuario(id)
 );
-
-
-+

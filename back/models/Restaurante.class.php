@@ -6,42 +6,12 @@ require_once BASE_PATH . '/database/conexao.php';
 class Restaurante
 {
 
-    function autenticar_usuario($params){
-        try{
 
-            $sql = "SELECT u.id_usuario, u.nome, r.id_restaurante, r.nome AS nome_restaurante
-                    FROM usuarios u
-                    JOIN restaurantes r ON u.id_restaurante = r.id_restaurante
-                    WHERE u.username = :username AND u.senha = :senha AND r.login_restaurante = :login_restaurante";
-            $statement = Conexao::getInstance()->prepare($sql);
-            $statement->bindParam(':username', $params['username'], PDO::PARAM_STR);
-            $statement->bindParam(':senha', $params['senha'], PDO::PARAM_STR);
-            $statement->bindParam(':login_restaurante', $params['login_restaurante'], PDO::PARAM_STR);
-            $statement->execute();
-            $dados = $statement->fetch(PDO::FETCH_ASSOC);
-            if($statement->rowCount() === 0){
-                throw new Exception("Usuário ou senha inválidos.");
-            }
-            return [
-                'dados' => $dados,
-                'registros' => $statement->rowCount(),
-                'cdg_erro' => 0,
-                'msg' => 'Autenticação realizada com sucesso'
-            ];
-        }catch(Exception $e){
-            return [
-                'dados' => [],
-                'registros' => 0,
-                'cdg_erro' => 1,
-                'msg' => $e->getMessage()
-            ];
-        }
-    }
 
     public function cadastrar_restaurante($params)
     {
+        $pdo = Conexao::getInstance();
         try {
-            $pdo = Conexao::getInstance();
             $pdo->beginTransaction();
 
             // Cadastra endereço

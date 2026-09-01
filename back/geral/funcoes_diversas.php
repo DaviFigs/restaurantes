@@ -41,7 +41,7 @@ function salvar_token($token, $id_restaurante, $id_usuario)
     }
 }   
 
-function buscas_dados_via_chave($chave){
+function buscar_dados_via_chave($chave){
     try{
         $sql = "SELECT u.id_usuario, u.nome, r.id_restaurante, r.nome AS nome_restaurante, t.token, t.validade
                 FROM usuarios u

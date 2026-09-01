@@ -10,9 +10,13 @@ require_once BASE_PATH . '/models/Lancamento.class.php';
 function autenticacao($params)
 {
     try {
-        
-        
-
+        $oUsuario = new Usuario();
+        $res = $oUsuario->autenticar_usuario($params);
+        if ($res['registros'] === 0) {
+            throw new Exception('Usuário ou senha inválidos.');
+        }
+        return $res;
+    } catch (Exception $e) {
         return [
             'info' => [
                 [
@@ -39,17 +43,13 @@ function autenticacao($params)
 function prep_salvar_usuario($params)
 {
     try {
-        // TOD: Lógica para salvar/editar usuário
+        $oUsuario = new Usuario();
+        $res = $oUsuario->salvar_usuario($params);
+        if ($res['info']['registros'] === 0) {
+            throw new Exception('Erro ao salvar usuário');
+        }
 
-        return [
-            'info' => [
-                [
-                    'registros' => 1,
-                    'cdg_erro'  => 0,
-                    'msg'       => 'Usuário salvo com sucesso'
-                ]
-            ]
-        ];
+        return $res;
     } catch (Exception $e) {
         return [
             'info' => [
@@ -66,18 +66,13 @@ function prep_salvar_usuario($params)
 function prep_listar_usuarios($params)
 {
     try {
-        // TODO: Lógica para listar usuários
+        $oUsuario = new Usuario();
+        $usuarios = $oUsuario->listar_usuarios($params);
+        if($usuarios['info']['registros'] === 0){
+            throw new Exception('Nenhum usuário encontrado');
+        }
 
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => 0,
-                    'msg'       => ''
-                ]
-            ],
-            'dados' => []
-        ];
+        return $usuarios;
     } catch (Exception $e) {
         return [
             'info' => [
@@ -94,18 +89,14 @@ function prep_listar_usuarios($params)
 function prep_buscar_usuario($params)
 {
     try {
-        // TODO: Lógica para buscar um usuário específico
+        $oUsuario = new Usuario();
+        $res = $oUsuario->buscar_usuario($params);
+        if($res['info']['registros'] === 0){
+            throw new Exception('Usuário não encontrado');
+        }
+        $retorno = $res;
 
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => 0,
-                    'msg'       => ''
-                ]
-            ],
-            'dados' => []
-        ];
+        return $retorno;
     } catch (Exception $e) {
         return [
             'info' => [

@@ -41,13 +41,14 @@ try {
         if(empty($chave) && $servico != 'autenticacao'){
             throw new Exception("É necessária uma chave de autenticação para este serviço!");
         }
-        else{
-            $dados_usuario = buscas_dados_via_chave($chave);
+        if($chave && $servico != 'autenticacao'){
+            $dados_usuario = buscar_dados_via_chave($chave);
             if($dados_usuario['registros'] === 0){
                 throw new Exception("Chave de autenticação inválida ou expirada!");
             }
             $dados['usuario'] = $dados_usuario['dados_usuario'];
         }
+        
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new Exception('JSON inválido: ' . json_last_error_msg());
         }
