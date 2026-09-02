@@ -6,22 +6,8 @@ require_once BASE_PATH . '/database/conexao.php';
 
 function gerar_chave_aleatoria($tamanho = 32)
 {
-    $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $pdo = Conexao::getInstance();
-
-    do {
-        $chave = '';
-        for ($i = 0; $i < $tamanho; $i++) {
-            $chave .= $caracteres[random_int(0, strlen($caracteres) - 1)];
-        }
-
-        $stmt = $pdo->prepare('SELECT token, validade FROM tokens WHERE token = :token LIMIT 1');
-        $stmt->execute([':token' => $chave]);
-    } while ($stmt->fetch(PDO::FETCH_ASSOC));
-
-    return $chave;
+    return bin2hex(random_bytes($tamanho / 2));
 }
-
 function salvar_token($token, $id_restaurante, $id_usuario)
 {
     try {

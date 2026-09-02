@@ -6,37 +6,87 @@ require_once BASE_PATH . '/geral/funcoes_diversas.php';
 
 class Usuario
 {
-        function autenticar_usuario($params){
-        try{
+    function autenticar_usuario($params)
+    {
+        try {
+            $pdo = Conexao::getInstance();
 
-            $sql = "SELECT u.id_usuario, u.nome, r.id_restaurante, r.nome AS nome_restaurante
-                    FROM usuarios u
-                    JOIN restaurantes r ON u.id_restaurante = r.id_restaurante
-                    WHERE u.username = :username AND u.senha = :senha AND r.login_restaurante = :login_restaurante";
-            $statement = Conexao::getInstance()->prepare($sql);
-            $statement->bindParam(':username', $params['username'], PDO::PARAM_STR);
-            $statement->bindParam(':senha', $params['senha'], PDO::PARAM_STR);
-            $statement->bindParam(':login_restaurante', $params['login_restaurante'], PDO::PARAM_STR);
-            $statement->execute();
+            $sql = "SELECT 
+                        u.id AS id_usuario,
+                        u.nome,
+                        r.id AS id_restaurante,
+                        r.nome AS nome_restaurante
+                    FROM usuario u
+                    JOIN restaurante r ON u.id_restaurante = r.id
+                    WHERE u.username = :username
+                    AND u.senha = :senha
+                    AND r.login_restaurante = :login_restaurante
+                    AND u.ativo = 1
+                    AND r.ativo = 1
+                    LIMIT 1";
+
+            $statement = $pdo->prepare($sql);
+
+            $statement->execute([
+                ':username' => $params['username'],
+                ':senha' => $params['senha'],
+                ':login_restaurante' => $params['login_restaurante']
+            ]);
+
             $dados = $statement->fetch(PDO::FETCH_ASSOC);
-            if($statement->rowCount() === 0){
+
+            if (count($dados) === 0) {
                 throw new Exception("Usuário ou senha inválidos.");
             }
-            $chave_de_acesso = gerar_chave_aleatoria();
-            salvar_token($chave_de_acesso, $dados['id_restaurante'], $dados['id_usuario']);
+
+            // Geração da chave aleatória
+            do {
+                $chave_de_acesso = gerar_chave_aleatoria();
+
+                $sql = "SELECT 1
+                        FROM tokens
+                        WHERE token = :token
+                        LIMIT 1";
+
+                $statement_token = $pdo->prepare($sql);
+
+                $statement_token->execute([
+                    ':token' => $chave_de_acesso
+                ]);
+
+                $chave_valida = ($statement_token->fetchColumn() === false);
+
+            } while (!$chave_valida);
+
+            salvar_token(
+                $chave_de_acesso,
+                $dados['id_restaurante'],
+                $dados['id_usuario']
+            );
+
             $dados['chave_de_acesso'] = $chave_de_acesso;
+
             return [
-                'dados' => $dados,
-                'registros' => $statement->rowCount(),
-                'cdg_erro' => 0,
-                'msg' => 'Autenticação realizada com sucesso'
+                'info' => [
+                    [
+                        'registros' => 1,
+                        'cdg_erro' => 0,
+                        'msg' => 'Autenticação realizada com sucesso'
+                    ]
+                ],
+                'dados' => $dados
             ];
-        }catch(Exception $e){
+
+        } catch (Exception $e) {
             return [
-                'dados' => [],
-                'registros' => 0,
-                'cdg_erro' => 1,
-                'msg' => $e->getMessage()
+                'info' => [
+                    [
+                        'registros' => 0,
+                        'cdg_erro' => 1,
+                        'msg' => $e->getMessage()
+                    ]
+                ],
+                'dados' => []
             ];
         }
     }

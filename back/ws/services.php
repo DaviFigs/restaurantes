@@ -34,14 +34,14 @@ $retorno = [
 
 try {
     if (!empty($dadosin)) {
-        $dados = json_decode($dadosin, true)['dados'];
-        $servico = $dados['head']['servico'];
-        $chave = $dados['head']['chave'];
-
+        $dadosin = json_decode($dadosin, true)['dados'];
+        $servico = $dadosin['head']['servico'];
+        $chave = $dadosin['head']['chave'];
+        $dados = $dadosin['data'];
         if(empty($chave) && $servico != 'autenticacao'){
             throw new Exception("É necessária uma chave de autenticação para este serviço!");
         }
-        if($chave && $servico != 'autenticacao'){
+        if(!empty($chave) && $servico != 'autenticacao'){
             $dados_usuario = buscar_dados_via_chave($chave);
             if($dados_usuario['registros'] === 0){
                 throw new Exception("Chave de autenticação inválida ou expirada!");

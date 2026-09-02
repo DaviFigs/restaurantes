@@ -12,7 +12,7 @@ function autenticacao($params)
     try {
         $oUsuario = new Usuario();
         $res = $oUsuario->autenticar_usuario($params);
-        if ($res['registros'] === 0) {
+        if ($res['info'][0]['registros'] === 0) {
             throw new Exception('Usuário ou senha inválidos.');
         }
         return $res;
