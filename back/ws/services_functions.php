@@ -7,33 +7,46 @@ require_once BASE_PATH . '/models/Comanda.class.php';
 require_once BASE_PATH . '/models/Produto.class.php';
 require_once BASE_PATH . '/models/Lancamento.class.php';
 
+
+function cadastrar_contratante($params){
+    if($params['tipo_cadastro'] == 'google'){
+
+    }
+    else{
+        
+        $oRestaurante = new Restaurante();
+        $res = $oRestaurante->cadastrar_contratante($params);
+        return $res;
+    }
+}
 function autenticacao($params)
 {
     try {
         $oUsuario = new Usuario();
+
         $res = $oUsuario->autenticar_usuario($params);
+
         if ($res['info'][0]['registros'] === 0) {
             throw new Exception('Usuário ou senha inválidos.');
         }
+
+        // Usuário autenticado: gera um novo ID de sessão
+        session_regenerate_id(true);
+
+        $_SESSION['id_usuario'] = $res['dados']['id_usuario'];
+        $_SESSION['id_restaurante'] = $res['dados']['id_restaurante'];
+        $_SESSION['nome_usuario'] = $res['dados']['nome_usuario'];
+        $_SESSION['nome_restaurante'] = $res['dados']['nome_restaurante'];
+
         return $res;
+
     } catch (Exception $e) {
         return [
             'info' => [
                 [
                     'registros' => 0,
-                    'cdg_erro'  => 0,
-                    'msg'       => 'Autenticação realizada com sucesso'
-                ]
-            ],
-            'dados' => []
-        ];
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
+                    'cdg_erro' => $e->getCode() ?: 1,
+                    'msg' => $e->getMessage()
                 ]
             ]
         ];
@@ -42,72 +55,41 @@ function autenticacao($params)
 
 function prep_salvar_usuario($params)
 {
-    try {
-        $oUsuario = new Usuario();
-        $res = $oUsuario->salvar_usuario($params);
-        if ($res['info']['registros'] === 0) {
-            throw new Exception('Erro ao salvar usuário');
-        }
 
-        return $res;
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
+    $oUsuario = new Usuario();
+    $res = $oUsuario->salvar_usuario($params);
+    if ($res['info']['registros'] === 0) {
+        throw new Exception('Erro ao salvar usuário');
     }
+
+    return $res;
+    
 }
 
 function prep_listar_usuarios($params)
 {
-    try {
-        $oUsuario = new Usuario();
-        $usuarios = $oUsuario->listar_usuarios($params);
-        if($usuarios['info']['registros'] === 0){
-            throw new Exception('Nenhum usuário encontrado');
-        }
 
-        return $usuarios;
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
+    $oUsuario = new Usuario();
+    $usuarios = $oUsuario->listar_usuarios($params);
+    if($usuarios['info']['registros'] === 0){
+        throw new Exception('Nenhum usuário encontrado');
     }
+
+    return $usuarios;
+
 }
 
 function prep_buscar_usuario($params)
-{
-    try {
-        $oUsuario = new Usuario();
-        $res = $oUsuario->buscar_usuario($params);
-        if($res['info']['registros'] === 0){
-            throw new Exception('Usuário não encontrado');
-        }
-        $retorno = $res;
-
-        return $retorno;
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
+{       
+    $oUsuario = new Usuario();
+    $res = $oUsuario->buscar_usuario($params);
+    if($res['info']['registros'] === 0){
+        throw new Exception('Usuário não encontrado');
     }
+    $retorno = $res;
+
+    return $retorno;
+
 }
 
 function prep_excluir_usuario($params)
@@ -144,112 +126,33 @@ function prep_excluir_usuario($params)
 
 function prep_cadastrar_restaurante($params)
 {
-    try {
+        $oRestaurante = new Restaurante();
+        $res = $oRestaurante->cadastrar_restaurante($params);
         // TODO: Lógica para cadastrar restaurante
 
-        return [
-            'info' => [
-                [
-                    'registros' => 1,
-                    'cdg_erro'  => 0,
-                    'msg'       => 'Restaurante cadastrado com sucesso'
-                ]
-            ]
-        ];
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
-    }
+        return $res;
+    
 }
 
 function prep_salvar_restaurante($params)
 {
-    try {
-        // TODO: Lógica para salvar/atualizar restaurante
-
-        return [
-            'info' => [
-                [
-                    'registros' => 1,
-                    'cdg_erro'  => 0,
-                    'msg'       => 'Restaurante salvo com sucesso'
-                ]
-            ]
-        ];
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
-    }
+    $oRestaurante = new Restaurante();
+    $res = $oRestaurante->update_restaurante($params);
+    return $res;
 }
 
 function prep_listar_restaurantes($params)
 {
-    try {
-        // TODO: Lógica para listar restaurantes
-
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => 0,
-                    'msg'       => ''
-                ]
-            ],
-            'dados' => []
-        ];
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
-    }
+    $oRestaurante = new Restaurante();
+    $restaurantes = $oRestaurante->listar_restaurantes($params);
+    return $restaurantes;
 }
 
 function prep_buscar_restaurante($params)
 {
-    try {
-        // TODO: Lógica para buscar um restaurante específico
-
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => 0,
-                    'msg'       => ''
-                ]
-            ],
-            'dados' => []
-        ];
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
-    }
+    $oRestaurante = new Restaurante();
+    $restaurantes = $oRestaurante->buscar_restaurante($params);
+    return $restaurantes;
 }
 
 function prep_excluir_restaurante($params)

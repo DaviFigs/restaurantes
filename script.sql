@@ -1,26 +1,41 @@
 --sistema para restaurantes
 
+create table contratante(
+		id serial primary key,
+		nome_completo varchar(100) not null,
+		email varchar(100) not null,
+		senha varchar(256) not null,
+		data_criacao timestamp default now(),
+		cpf varchar(11) not null,
+		telefone varchar(20) not null
+);
+
+
+create table restaurante(
+     id serial primary key,
+	id_contratante int not null,
+     nome varchar(50) not null,
+     login_restaurante varchar(30) not null,
+     cpf_cnpj varchar(30) not null,
+     data_cadastro timestamp default now(),
+     email varchar(100) not null,
+     telefone varchar(20) not null,
+     ativo int not null default 1,
+     url_foto text default 'icone_padrao.jpg',
+     cor_principal varchar(10) default '#580b7cda',
+	foreign key(id_contratante) references contratante(id)
+);
 create table endereco(
      id serial primary key,
+     id_restaurante int not null,
      cep varchar(10) not null,
      logradouro varchar(50) not null,
      numero varchar(10) not null,
      complemento varchar(50),
      bairro varchar(50) not null,
      cidade varchar(50) not null,
-     estado char(2) not null
-);
-
-create table restaurante(
-     id serial primary key,
-     id_endereco int not null,
-     nome varchar(50) not null,
-     login_restaurante varchar(30) not null,
-     cpf_cnpj varchar(30) not null,
-     data_cadastro timestamp default now(),
-     url_foto text,
-     cor_principal varchar(10) default '#580b7cda',
-     foreign key(id_endereco) references endereco(id)
+     estado char(2) not null,
+     foreign key(id_restaurante) references restaurante(id)
 );
 
 create table usuario(
@@ -74,16 +89,4 @@ create table comanda_lancamento(
      id_comanda int not null,
      data_hora timestamp not null,
      foreign key(id_comanda) references comanda(id)
-);
-
-CREATE TABLE tokens (
-    id serial PRIMARY KEY,
-    token varchar(32) NOT NULL,
-    id_restaurante int NOT NULL,
-    id_usuario int NOT NULL,
-    criacao timestamp DEFAULT now(),
-    validade timestamp DEFAULT (now() + interval '24 hours'),
-
-    FOREIGN KEY (id_restaurante) REFERENCES restaurante(id),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
 );

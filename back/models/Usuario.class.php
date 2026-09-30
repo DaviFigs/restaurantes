@@ -39,33 +39,6 @@ class Usuario
                 throw new Exception("Usuário ou senha inválidos.");
             }
 
-            // Geração da chave aleatória
-            do {
-                $chave_de_acesso = gerar_chave_aleatoria();
-
-                $sql = "SELECT 1
-                        FROM tokens
-                        WHERE token = :token
-                        LIMIT 1";
-
-                $statement_token = $pdo->prepare($sql);
-
-                $statement_token->execute([
-                    ':token' => $chave_de_acesso
-                ]);
-
-                $chave_valida = ($statement_token->fetchColumn() === false);
-
-            } while (!$chave_valida);
-
-            salvar_token(
-                $chave_de_acesso,
-                $dados['id_restaurante'],
-                $dados['id_usuario']
-            );
-
-            $dados['chave_de_acesso'] = $chave_de_acesso;
-
             return [
                 'info' => [
                     [
