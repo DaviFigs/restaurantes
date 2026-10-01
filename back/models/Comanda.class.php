@@ -148,12 +148,12 @@ class Comanda
                if (!$comandas) {
                     throw new PDOException("Comanda não encontrada");
                }
-               return [
-                    'dados' => $comandas,
-                    'registros' => count($comandas),
-                    'cdg_erro' => 0,
-                    'msg' => 'Comanda encontrada com sucesso'
-               ];
+                    return [
+                         'dados' => $comandas,
+                         'registros' => count($comandas),
+                         'cdg_erro' => 0,
+                         'msg' => 'Comanda encontrada com sucesso'
+                    ];
           }
           catch(PDOException $e)
           {
@@ -166,6 +166,36 @@ class Comanda
           }
      }
 
+
+     function fechar_comanda($params){
+          try{
+               $pdo = Conexao::getInstance();
+
+               $sql = "UPDATE comanda set fechada = true where id = :id_comanda";
+               $stmt = $pdo->prepare($sql);
+               $stmt->execute([
+                    ':id_comanda' => $params['id_comanda']
+               ]);
+               if ($stmt->rowCount() == 0) {
+                    throw new PDOException("Erro ao fechar comanda");
+               }
+                return [
+                         "registros" => 1,
+                         'cdg_erro' => 0,
+                         'msg' => 'Comanda fechada com sucesso'
+                    ];
+
+
+          }catch(PDOException $e)
+          {
+               return [
+                    'dados' => [],
+                    'registros' => 0,
+                    'cdg_erro' => 1,
+                    'msg' => $e->getMessage()
+               ];
+          }
+     }
      
 
 }

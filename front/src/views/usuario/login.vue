@@ -57,7 +57,7 @@ async function fazerLogin() {
 }
 
 function irParaCadastro() {
-  router.push('/contratante/cadastro')
+  router.push('/cadastro')
 }
 </script>
 

@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import Login from '../views/usuario/login.vue'
-import NovoContratante from '../views/contratante/novo_contratante.vue'
-import CadastroRestaurante from '../views/restaurante/cadastro_restaurante.vue'
+import Cadastro from '../views/cadastro_contratante_restaurante.vue'
 
 const routes = [
+
     {
         path: '/',
         redirect: '/login'
@@ -17,16 +17,11 @@ const routes = [
     },
 
     {
-        path: '/contratante/cadastro',
-        name: 'contratante-cadastro',
-        component: NovoContratante
-    },
-
-    {
-        path: '/restaurante/cadastro',
-        name: 'restaurante-cadastro',
-        component: CadastroRestaurante
+        path: '/cadastro',
+        name: 'cadastro',
+        component: Cadastro
     }
+
 ]
 
 const router = createRouter({

@@ -14,3 +14,11 @@ export function autenticar(restaurante, usuario, senha) {
         }
     )
 }
+
+
+export function cadastrarUsuario(dados){
+    return api(
+        'cadastrar_usuario',
+        dados
+    )
+}

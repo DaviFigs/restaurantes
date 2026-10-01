@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../phpConfig.php';
 require_once BASE_PATH . '/models/Usuario.class.php';
+require_once BASE_PATH . '/models/Contratante.class.php';
 require_once BASE_PATH . '/models/Restaurante.class.php';
 require_once BASE_PATH . '/models/Comanda.class.php';
 require_once BASE_PATH . '/models/Produto.class.php';
@@ -9,48 +10,32 @@ require_once BASE_PATH . '/models/Lancamento.class.php';
 
 
 function cadastrar_contratante($params){
-    if($params['tipo_cadastro'] == 'google'){
-
-    }
-    else{
         
-        $oRestaurante = new Restaurante();
-        $res = $oRestaurante->cadastrar_contratante($params);
+        $oContratante = new Contratante();
+        $res = $oContratante->cadastrar_contratante($params);
         return $res;
-    }
+    
 }
 function autenticacao($params)
 {
-    try {
-        $oUsuario = new Usuario();
+    $oUsuario = new Usuario();
 
-        $res = $oUsuario->autenticar_usuario($params);
+    $res = $oUsuario->autenticar_usuario($params);
 
-        if ($res['info'][0]['registros'] === 0) {
-            throw new Exception('Usuário ou senha inválidos.');
-        }
-
-        // Usuário autenticado: gera um novo ID de sessão
-        session_regenerate_id(true);
-
-        $_SESSION['id_usuario'] = $res['dados']['id_usuario'];
-        $_SESSION['id_restaurante'] = $res['dados']['id_restaurante'];
-        $_SESSION['nome_usuario'] = $res['dados']['nome_usuario'];
-        $_SESSION['nome_restaurante'] = $res['dados']['nome_restaurante'];
-
-        return $res;
-
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro' => $e->getCode() ?: 1,
-                    'msg' => $e->getMessage()
-                ]
-            ]
-        ];
+    if ($res['info'][0]['registros'] === 0) {
+        throw new Exception('Usuário ou senha inválidos.');
     }
+
+    // Usuário autenticado: gera um novo ID de sessão
+    session_regenerate_id(true);
+
+    $_SESSION['id_usuario'] = $res['dados']['id_usuario'];
+    $_SESSION['id_restaurante'] = $res['dados']['id_restaurante'];
+    $_SESSION['nome_usuario'] = $res['dados']['nome_usuario'];
+    $_SESSION['nome_restaurante'] = $res['dados']['nome_restaurante'];
+
+    return $res;
+
 }
 
 function prep_salvar_usuario($params)

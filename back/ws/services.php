@@ -224,6 +224,7 @@ try {
 
         'autenticacao'
             => 'autenticacao',
+            
         'cadastrar_contratante'
             => 'cadastrar_contratante',
 

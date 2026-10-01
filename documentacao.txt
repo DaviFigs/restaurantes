@@ -2,41 +2,52 @@
 AQUI FICARÁ A DOCUMENTAÇÃO DE CHAMADA DE TODOS OS SERVIÇOS DESSA API
 
 
-//autenticacao
+
+//cadastrar_contratante
+{
+  "dados": {
+    "head": {
+      "servico": "cadastrar_contratante"
+    },
+    "data": {
+      "nome_completo": "Giovana",
+      "email": "giovana.pianezzer@gmail.com",
+      "senha": "giovana123",
+      "cpf": "11111111111",
+      "telefone": "12412341234123412412"
+    }
+  }
+}
+
+//cadastrar restaurante
 {
     "dados":{
         "head":{
-            "chave":"",
-            "servico":"autenticacao"   
+            "id_contratante":1,
+            "id_usuario":"",
+            "id_restaurante":"",
+            "servico":"cadastrar_restaurante"   
         },
         "data":{
-            "restaurante":"berinjelas",
-            "usuario":"admin",
-            "senha":"admin"
+            "endereco":{
+                "logradouro":"rua oscar",
+                "numero":"2203",
+                "complemento":"",
+                "bairro":"base aerea",
+                "cidade":"campo grande",
+                "estado":"ms",
+                "cep":"79090417"
+            },
+            "restaurante":{
+                "nome":"Delicia da Gi",
+                "cpf_cnpj":"07918769180",
+                "telefone":"61991562891",
+                "email":"giovanapianezze@gmail.com",
+                "login_restaurante":"gidelicia"
+            }
         }
 
     }
 }
-
-
-//salva_usuario
-{
-    "dados":{
-        "head":{
-            "chave":"qwergq3goiqbhnfgu89o1h3gr",
-            "servico":"salvar_usuario"   
-        },
-        "data":{
-            "usuario":"carlos",
-            "senha":"1234",
-            "tipo":"admin"
-        }
-
-    }
-}
-
-
-
-
 
 
