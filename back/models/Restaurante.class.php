@@ -27,7 +27,7 @@ class Restaurante
             $sql_restaurante = "
                 INSERT INTO restaurante
                 (
-                    id_contratante,
+                    id_usuario_master,
                     nome,
                     login_restaurante,
                     cpf_cnpj,
@@ -36,7 +36,7 @@ class Restaurante
                 )
                 VALUES
                 (
-                    :id_contratante,
+                    :id_usuario_master,
                     :nome,
                     :login_restaurante,
                     :cpf_cnpj,
@@ -49,7 +49,7 @@ class Restaurante
             $stmt_restaurante = $pdo->prepare($sql_restaurante);
 
             $stmt_restaurante->execute([
-                ':id_contratante'    => $p_restaurante['id_contratante'],
+                ':id_usuario_master'    => $p_restaurante['id_usuario_master'],
                 ':nome'              => $p_restaurante['nome'],
                 ':login_restaurante' => $p_restaurante['login_restaurante'],
                 ':cpf_cnpj'          => $p_restaurante['cpf_cnpj'],

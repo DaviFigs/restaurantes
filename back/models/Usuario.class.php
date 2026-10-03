@@ -13,7 +13,7 @@ class Usuario
 
             $sql = "SELECT 
                         u.id AS id_usuario,
-                        u.nome,
+                        u.nome as nome_usuario,
                         r.id AS id_restaurante,
                         r.nome AS nome_restaurante
                     FROM usuario u
@@ -33,9 +33,9 @@ class Usuario
                 ':login_restaurante' => $params['login_restaurante']
             ]);
 
-            $dados = $statement->fetch(PDO::FETCH_ASSOC);
+            $dado_usuario = $statement->fetch(PDO::FETCH_ASSOC);
 
-            if (count($dados) === 0) {
+            if (count($dado_usuario) === 0) {
                 throw new Exception("Usuário ou senha inválidos.");
             }
 
@@ -47,7 +47,7 @@ class Usuario
                         'msg' => 'Autenticação realizada com sucesso'
                     ]
                 ],
-                'dados' => $dados
+                'dados' => $dado_usuario
             ];
 
         } catch (Exception $e) {
@@ -83,13 +83,19 @@ class Usuario
             }
             else
             {
+                $master = false;
+                if($params['login_master'] == true){
+                    $master = true;
+                }
+
                 //cria novo usuário
-                $stmt = $pdo->prepare('INSERT INTO usuario (nome, email, senha, tipo) VALUES (:nome, :email, :senha, :tipo)');
+                $stmt = $pdo->prepare('INSERT INTO usuario (nome, email, senha, tipo,login_master) VALUES (:nome, :email, :senha, :tipo, :login_master)');
                 $stmt->execute([
                     ':nome' => $params['nome'],
                     ':email' => $params['email'],
                     ':senha' => $params['senha'],
                     ':tipo' => $params['tipo'],
+                    ':login_master' => $master
                 ]);
                 $id_usuario = $pdo->lastInsertId();
             }

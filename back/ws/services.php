@@ -41,7 +41,9 @@ require_once BASE_PATH . '/geral/funcoes_diversas.php';
 
 $servicos_sem_auth = [
     'autenticacao',
-    'cadastrar_contratante'
+    'cadastrar_usuario_master',
+    'cadastrar_restaurante',
+    'login_usuario_master'
 
 ];
 
@@ -225,8 +227,11 @@ try {
         'autenticacao'
             => 'autenticacao',
             
-        'cadastrar_contratante'
-            => 'cadastrar_contratante',
+        'cadastrar_usuario_master'
+            => 'cadastrar_usuario_master',
+
+        'login_usuario_master'
+            => 'login_usuario_master',
 
         'salvar_usuario'
             => 'prep_salvar_usuario',

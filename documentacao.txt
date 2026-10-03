@@ -3,11 +3,11 @@ AQUI FICARÁ A DOCUMENTAÇÃO DE CHAMADA DE TODOS OS SERVIÇOS DESSA API
 
 
 
-//cadastrar_contratante
+//cadastrar_usuario_master
 {
   "dados": {
     "head": {
-      "servico": "cadastrar_contratante"
+      "servico": "cadastrar_usuario_master"
     },
     "data": {
       "nome_completo": "Giovana",
@@ -23,7 +23,7 @@ AQUI FICARÁ A DOCUMENTAÇÃO DE CHAMADA DE TODOS OS SERVIÇOS DESSA API
 {
     "dados":{
         "head":{
-            "id_contratante":1,
+            "id_usuario_master":1,
             "id_usuario":"",
             "id_restaurante":"",
             "servico":"cadastrar_restaurante"   
@@ -50,4 +50,30 @@ AQUI FICARÁ A DOCUMENTAÇÃO DE CHAMADA DE TODOS OS SERVIÇOS DESSA API
     }
 }
 
+ //cadastrar_usuario
+"dados":{
+        "head":{
+            "id_usuario":"dono",
+            "id_restaurante":"1",
+            "servico":"cadastrar_usuario"   
+        },
+        "data":{
+            "endereco":{
+                "logradouro":"rua oscar",
+                "numero":"2203",
+                "complemento":"",
+                "bairro":"base aerea",
+                "cidade":"campo grande",
+                "estado":"ms",
+                "cep":"79090417"
+            },
+            "restaurante":{
+                "nome":"Delicia da Gi",
+                "cpf_cnpj":"07918769180",
+                "telefone":"61991562891",
+                "email":"giovanapianezze@gmail.com",
+                "login_restaurante":"gidelicia"
+            }
+        }
 
+    }

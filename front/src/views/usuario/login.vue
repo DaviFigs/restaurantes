@@ -43,7 +43,7 @@ async function fazerLogin() {
     sucesso.value =
       info.msg || 'Autenticação realizada com sucesso.'
 
-    router.push('/dashboard')
+    router.push('/home')
 
   } catch (error) {
     erro.value =
@@ -58,6 +58,10 @@ async function fazerLogin() {
 
 function irParaCadastro() {
   router.push('/cadastro')
+}
+
+function loginMaster() {
+  router.push('/login_master')
 }
 </script>
 
@@ -116,7 +120,7 @@ function irParaCadastro() {
         </p>
 
         <h2 id="login-title">
-          Acessar sua conta
+          Acesse sua conta e gerencie seu restaurante
         </h2>
 
         <p>
@@ -219,7 +223,15 @@ function irParaCadastro() {
           class="botao-cadastro"
           @click="irParaCadastro"
         >
-          Criar meu restaurante
+          Cadastre-se e Crie Seu Restaurante
+        </button>
+
+        <button
+          type="button"
+          class="botao-cadastro"
+          @click="loginMaster"
+        >
+          Login Master (Usuário Chefe)
         </button>
 
       </div>

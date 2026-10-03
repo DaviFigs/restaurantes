@@ -1,29 +1,32 @@
 --sistema para restaurantes
 
-create table contratante(
+
+create table usuario_master(
 		id serial primary key,
 		nome_completo varchar(100) not null,
 		email varchar(100) not null,
 		senha varchar(256) not null,
 		data_criacao timestamp default now(),
 		cpf varchar(11) not null,
-		telefone varchar(20) not null
+		telefone varchar(20) not null,
+		data_nascimento date not null
+		
 );
 
 
 create table restaurante(
      id serial primary key,
-	id_contratante int not null,
+	id_usuario_master int not null,
      nome varchar(50) not null,
      login_restaurante varchar(30) not null,
      cpf_cnpj varchar(30) not null,
      data_cadastro timestamp default now(),
      email varchar(100) not null,
      telefone varchar(20) not null,
-     ativo int not null default 1,
+     ativo boolean not null default true,
      url_foto text default 'icone_padrao.jpg',
      cor_principal varchar(10) default '#580b7cda',
-	foreign key(id_contratante) references contratante(id)
+	foreign key(id_usuario_master) references usuario_master(id)
 );
 create table endereco(
      id serial primary key,
@@ -43,10 +46,12 @@ create table usuario(
      id_restaurante int not null,
      nome varchar(50) not null,
      username varchar(30) not null,
-     senha varchar(50) not null,
+     senha varchar(256) not null,
      nivel int not null,
+	 ativo boolean not null default true,
      --1 utilizador
      --2 adm
+	 --3 dono
      foreign key(id_restaurante) references restaurante(id)
 );
 

@@ -16,9 +16,9 @@ export function autenticar(restaurante, usuario, senha) {
 }
 
 
-export function cadastrarUsuario(dados){
+export function cadastrarUsuarioMaster(dados){
     return api(
-        'cadastrar_usuario',
+        'cadastrar_usuario_master',
         dados
     )
 }

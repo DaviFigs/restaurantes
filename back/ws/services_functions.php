@@ -2,17 +2,28 @@
 
 require_once __DIR__ . '/../phpConfig.php';
 require_once BASE_PATH . '/models/Usuario.class.php';
-require_once BASE_PATH . '/models/Contratante.class.php';
 require_once BASE_PATH . '/models/Restaurante.class.php';
+require_once BASE_PATH . '/models/UsuarioMaster.class.php';
 require_once BASE_PATH . '/models/Comanda.class.php';
 require_once BASE_PATH . '/models/Produto.class.php';
 require_once BASE_PATH . '/models/Lancamento.class.php';
 
 
-function cadastrar_contratante($params){
+function cadastrar_usuario_master($params){
         
-        $oContratante = new Contratante();
-        $res = $oContratante->cadastrar_contratante($params);
+        $ousuario_master = new UsuarioMaster();
+        $res = $ousuario_master->cadastrar_usuario_master($params);
+        return $res;
+    
+}
+
+function login_usuario_master($params){
+        
+        $ousuario_master = new UsuarioMaster();
+        $res = $ousuario_master->login_usuario_master($params);
+
+        $_SESSION['id_usuario_master'] = $res['dados']['id_usuario_master'];
+        $_SESSION['nome_usuario_master'] = $res['dados']['nome_completo'];
         return $res;
     
 }
