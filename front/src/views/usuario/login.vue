@@ -35,7 +35,7 @@ async function fazerLogin() {
 
     if (resultado.dados) {
       localStorage.setItem(
-        'crm-sessao',
+        'sessao_usuario',
         JSON.stringify(resultado.dados)
       )
     }
@@ -205,17 +205,24 @@ function loginMaster() {
         </button>
 
       </form>
+      <button
+          type="button"
+          class="botao-cadastro"
+          @click="loginMaster"
+        >
+          Login Master (Configure e analise seu restaurante)
+        </button>
 
 
       <div class="cadastro-separator">
-        <span>ou</span>
+        <span></span>
       </div>
 
 
       <div class="novo-restaurante">
 
         <p>
-          Ainda não possui uma conta?
+          Ainda não possui um restaurante ?
         </p>
 
         <button
@@ -224,14 +231,6 @@ function loginMaster() {
           @click="irParaCadastro"
         >
           Cadastre-se e Crie Seu Restaurante
-        </button>
-
-        <button
-          type="button"
-          class="botao-cadastro"
-          @click="loginMaster"
-        >
-          Login Master (Usuário Chefe)
         </button>
 
       </div>

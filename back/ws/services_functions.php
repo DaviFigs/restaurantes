@@ -7,20 +7,22 @@ require_once BASE_PATH . '/models/UsuarioMaster.class.php';
 require_once BASE_PATH . '/models/Comanda.class.php';
 require_once BASE_PATH . '/models/Produto.class.php';
 require_once BASE_PATH . '/models/Lancamento.class.php';
+require_once BASE_PATH . 'geral/funcoes_diversas.php';
 
 
 function cadastrar_usuario_master($params){
-        
-        $ousuario_master = new UsuarioMaster();
-        $res = $ousuario_master->cadastrar_usuario_master($params);
+        //parametros de cadastro de pessoa e cadastro de endereço
+
+        $Ousuario_master = new UsuarioMaster();
+        $res = $Ousuario_master->cadastrar_usuario_master($params);
         return $res;
     
 }
 
 function login_usuario_master($params){
         
-        $ousuario_master = new UsuarioMaster();
-        $res = $ousuario_master->login_usuario_master($params);
+        $Ousuario_master = new UsuarioMaster();
+        $res = $Ousuario_master->login_usuario_master($params);
 
         $_SESSION['id_usuario_master'] = $res['dados']['id_usuario_master'];
         $_SESSION['nome_usuario_master'] = $res['dados']['nome_completo'];
@@ -30,6 +32,7 @@ function login_usuario_master($params){
 function autenticacao($params)
 {
     $oUsuario = new Usuario();
+    
 
     $res = $oUsuario->autenticar_usuario($params);
 
@@ -39,14 +42,34 @@ function autenticacao($params)
 
     // Usuário autenticado: gera um novo ID de sessão
     session_regenerate_id(true);
-
     $_SESSION['id_usuario'] = $res['dados']['id_usuario'];
     $_SESSION['id_restaurante'] = $res['dados']['id_restaurante'];
     $_SESSION['nome_usuario'] = $res['dados']['nome_usuario'];
     $_SESSION['nome_restaurante'] = $res['dados']['nome_restaurante'];
 
+    salva_ultima_sessao($res['dados']['id_usuario']);
+    //salva o login no banco de dados
     return $res;
 
+}
+
+function logout($params)
+{
+    // Limpa todas as variáveis de sessão
+    $_SESSION = [];
+
+    // Destroi a sessão
+    session_destroy();
+
+    return [
+        'info' => [
+            [
+                'registros' => 1,
+                'cdg_erro'  => 0,
+                'msg'       => 'Logout realizado com sucesso'
+            ]
+        ]
+    ];
 }
 
 function prep_salvar_usuario($params)
@@ -234,193 +257,58 @@ function prep_listar_produtos($params)
 
 function prep_buscar_produto($params)
 {
-    try {
-        // TODO: Lógica para buscar produto
-
-        return [
-            'info' => [
-                [
-                    'registros' => 1,
-                    'cdg_erro'  => 0,
-                    'msg'       => 'Restaurante excluído com sucesso'
-                ]
-            ]
-        ];
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
-    }
+    $oProduto = new Produto();
+    $res = $oProduto->buscar_produto($params);
+    return $res;
+    
 }
 
 function prep_excluir_produto($params)
 {
-    try {
-        // TODO: Lógica para excluir produto
+    $oProduto = new Produto();
+    $res = $oProduto->excluir_produto($params);
+    return $res;
 
-        return [
-            'info' => [
-                [
-                    'registros' => 1,
-                    'cdg_erro'  => 0,
-                    'msg'       => 'Produto excluído com sucesso'
-                ]
-            ]
-        ];
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
-    }
 }
 
 function prep_abrir_comanda($params)
 {
-    try {
-        // TODO: Lógica para abrir comanda  
-
-        return [
-            'info' => [
-                [
-                    'registros' => 1,
-                    'cdg_erro'  => 0,
-                    'msg'       => 'Comanda aberta com sucesso'
-                ]
-            ]
-        ];
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
-    }
+    $oComanda= new Comanda();
+    $res = $oComanda->abrir_comanda($params);
+    return $res;
 }
 
+function prep_fechar_comanda($params)
+{
+    $oComandas = new Comanda();
+    $res = $oComandas->fechar_comanda($params);
+    return $res;
+}
 
 function prep_listar_comandas($params)
 {
-    try {
-        // TODO: Lógica para listar comandas
-
-        return [
-            'info' => [
-                [
-                    'registros' => 1,
-                    'cdg_erro'  => 0,
-                    'msg'       => 'Comandas listadas com sucesso'
-                ]
-            ]
-        ];
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
+    if(isset($params['data_abertura'])) {
+        $params['data_abertura'] = converter_data_postgres($params['data_abertura']);
     }
+    $oComandas = new Comanda();
+    $res = $oComandas->listar_comandas($params);
+    return $res;
+}
+
+function prep_trazer_dados_comanda($params)
+{
+    $oComandas = new Comanda();
+    $res = $oComandas->trazer_dados_comanda($params);
+    return $res;
 }
 
 function prep_buscar_comanda($params)
 {
-    try {
-        // TODO: Lógica para buscar comanda
-
-        return [
-            'info' => [
-                [
-                    'registros' => 1,
-                    'cdg_erro'  => 0,
-                    'msg'       => 'Restaurante excluído com sucesso'
-                ]
-            ]
-        ];
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
-    }
+    $oComandas = new Comanda();
+    $res = $oComandas->buscar_comanda($params);
+    return $res;
 }
 
 
-function prep_excluir_comanda($params)
-{
-    try {
-        // TODO: Lógica para excluir comanda
 
-        return [
-            'info' => [
-                [
-                    'registros' => 1,
-                    'cdg_erro'  => 0,
-                    'msg'       => 'Comanda excluída com sucesso'
-                ]
-            ]
-        ];
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
-    }
-}
-
-
-function prep_fechar_comanda($params)
-{
-    try {
-        // TODO: Lógica para fechar comanda
-
-        return [
-            'info' => [
-                [
-                    'registros' => 1,
-                    'cdg_erro'  => 0,
-                    'msg'       => 'Comanda fechada com sucesso'
-                ]
-            ]
-        ];
-    } catch (Exception $e) {
-        return [
-            'info' => [
-                [
-                    'registros' => 0,
-                    'cdg_erro'  => $e->getCode() ?: 1,
-                    'msg'       => $e->getMessage()
-                ]
-            ]
-        ];
-    }
-}
 

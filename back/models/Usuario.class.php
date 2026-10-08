@@ -15,9 +15,11 @@ class Usuario
                         u.id AS id_usuario,
                         u.nome as nome_usuario,
                         r.id AS id_restaurante,
-                        r.nome AS nome_restaurante
+                        r.nome AS nome_restaurante,
+                        um.id AS id_usuario_master,
                     FROM usuario u
                     JOIN restaurante r ON u.id_restaurante = r.id
+                    JOIN usuario_master um ON r.id_usuario_master = um.id
                     WHERE u.username = :username
                     AND u.senha = :senha
                     AND r.login_restaurante = :login_restaurante
@@ -38,7 +40,6 @@ class Usuario
             if (count($dado_usuario) === 0) {
                 throw new Exception("Usuário ou senha inválidos.");
             }
-
             return [
                 'info' => [
                     [

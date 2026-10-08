@@ -43,7 +43,7 @@ async function fazerLogin() {
         if (resultado.dados) {
 
             localStorage.setItem(
-                'crm-sessao-master',
+                'sessao_master',
                 JSON.stringify(resultado.dados)
             )
 
@@ -615,32 +615,6 @@ function voltarLogin() {
 
 }
 
-
-/* ========================================
-   FEEDBACK
-======================================== */
-
-.feedback {
-
-    margin: 0 0 18px;
-
-    font-size: 14px;
-
-    line-height: 1.4;
-
-}
-
-.error {
-
-    color: #c62828;
-
-}
-
-.success {
-
-    color: #2e7d32;
-
-}
 
 
 /* ========================================

@@ -19,7 +19,7 @@ class Comanda
                     throw new PDOException("Já existe uma comanda aberta para um cliente com o mesmo nome");
                }
 
-               $sql = "INSERT INTO comanda (id_usuario,id_restaurante,nome_cliente,data_abertura,hora_abertura) VALUES (:id_usuario, :id_restaurante, UPPER(:nome_cliente), CURRENT_DATE, CURRENT_TIME)";
+               $sql = "INSERT INTO comanda (id_usuario,id_restaurante,nome_cliente,data_hora_abertura) VALUES (:id_usuario, :id_restaurante, UPPER(:nome_cliente), CURRENT_DATE, CURRENT_TIME)";
                $stmt = $pdo->prepare($sql);
                $stmt->execute([
                     ':id_usuario' => $params['id_usuario'],
@@ -40,8 +40,8 @@ class Comanda
                     'cdg_erro' => 0,
                     'msg' => 'Comanda aberta com sucesso'
                ];
-          }
-          catch(PDOException $e)
+               }
+               catch(PDOException $e)
           {
                return [
                     'dados' => [],
@@ -197,5 +197,116 @@ class Comanda
           }
      }
      
+
+     function listar_comandas($params){
+          try{
+               //filtros
+               //abertas, fechadas, todas, data
+               $pdo = Conexao::getInstance();
+
+               $where = "WHERE 1=1 AND id_restaurante = " . $params['id_restaurante'];
+               if($params['abertas']){
+                    $where .= " AND fechada = false";
+               }
+               else if($params['fechadas']){
+                    $where .= " AND fechada = true";
+               }
+               if($params['data']){
+                    $where .= " AND data_hora_abertura::date = '" . $params['data'] . "'";
+               }
+               
+
+               $sql = "SELECT * FROM comanda $where";
+
+               $stmt = $pdo->prepare($sql);
+               $stmt->execute([
+                    ':id_comanda' => $params['id_comanda']
+               ]);
+               if ($stmt->rowCount() == 0) {
+                    throw new PDOException("Erro ao fechar comanda");
+               }
+                return [
+                         "registros" => 1,
+                         'cdg_erro' => 0,
+                         'msg' => 'Comanda fechada com sucesso'
+                    ];
+
+
+          }catch(PDOException $e)
+          {
+               return [
+                    'dados' => [],
+                    'registros' => 0,
+                    'cdg_erro' => 1,
+                    'msg' => $e->getMessage()
+               ];
+          }
+     }
+
+     function trazer_dados_comanda($params)
+     {
+     try {
+
+          $pdo = Conexao::getInstance(); 
+
+          $sql = "
+               SELECT
+                    c.id AS id_comanda,
+                    c.nome_cliente,
+                    c.data_hora_abertura,
+                    c.fechada,
+
+                    cp.id AS id_comanda_produto,
+
+                    p.id AS id_produto,
+                    p.nome AS nome_produto,
+                    p.preco AS preco_produto
+
+               FROM comanda c
+
+               LEFT JOIN comanda_produto cp
+                    ON c.id = cp.id_comanda
+
+               LEFT JOIN produto p
+                    ON cp.id_produto = p.id
+
+               WHERE c.id = :id_comanda
+          ";
+
+          $stmt = $pdo->prepare($sql);
+
+          $stmt->execute([
+               ':id_comanda' => $params['id_comanda']
+          ]);
+
+          $dados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+          if (!$dados) {
+
+               return [
+                    'dados' => [],
+                    'registros' => 0,
+                    'cdg_erro' => 1,
+                    'msg' => 'Comanda não encontrada'
+               ];
+          }
+
+          return [
+               'dados' => $dados,
+               'registros' => count($dados),
+               'cdg_erro' => 0,
+               'msg' => 'Comanda encontrada com sucesso'
+          ];
+
+     } catch (PDOException $e) {
+
+          return [
+               'dados' => [],
+               'registros' => 0,
+               'cdg_erro' => 1,
+               'msg' => $e->getMessage()
+          ];
+     }
+     }
 
 }

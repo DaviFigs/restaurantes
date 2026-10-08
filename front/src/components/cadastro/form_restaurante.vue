@@ -3,6 +3,10 @@
 const restaurante = defineModel('restaurante')
 const endereco = defineModel('endereco')
 
+const props = defineProps({
+    loading: Boolean
+})
+
 const emit = defineEmits([
     'voltar',
     'cadastrar'
@@ -274,8 +278,9 @@ const emit = defineEmits([
             <button
                 type="submit"
                 class="botao cadastrar"
+                :disabled="props.loading"
             >
-                Cadastrar
+                {{ props.loading ? 'Cadastrando...' : 'Cadastrar' }}
             </button>
 
         </div>
@@ -321,10 +326,10 @@ const emit = defineEmits([
 }
 
 .campo input:focus {
-    border-color: #580b7c;
+    border-color: #1d5c51;
 
     box-shadow:
-        0 0 0 3px rgba(88, 11, 124, 0.1);
+        0 0 0 3px rgba(29, 92, 81, 0.1);
 }
 
 .linha {
@@ -404,12 +409,17 @@ const emit = defineEmits([
 .cadastrar {
     flex: 1;
 
-    background: #580b7c;
+    background: #1d5c51;
     color: white;
 }
 
 .cadastrar:hover {
-    background: #480966;
+    background: #1d5c51cc;
+}
+
+.cadastrar:disabled {
+    opacity: 0.7;
+    cursor: wait;
 }
 
 @media (max-width: 600px) {

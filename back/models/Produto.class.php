@@ -1,6 +1,4 @@
 <?php
-
-
 require_once __DIR__ . '/../phpConfig.php';
 require_once BASE_PATH . '/database/conexao.php';
 
@@ -45,17 +43,35 @@ class Produto{
 
             // Confirma a operação
             $pdo->commit();
+            return [
+                "info"=>[
+                    "registros"=>1,
+                    "cdg_erro"=>0,
+                    "msg"=>"Produto salvo com sucesso"
+                ],
+                "dados"=>[
+                    "produto_id"=>$params['produto_id'] > 0 ? $params['produto_id'] : $pdo->lastInsertId()
+                ]
+            ];
 
         } catch (PDOException $e) {
             // Desfaz a transação em caso de erro
             if ($pdo->inTransaction()) {
                 $pdo->rollBack();
             }
-            throw new Exception("Erro ao salvar produto: " . $e->getMessage());
+            return [
+                'info' => [
+                    [
+                        'registros' => 0,
+                        'cdg_erro'  => $e->getCode() ?: 1,
+                        'msg'       => $e->getMessage()
+                    ]
+                ]
+            ];
         }
     }
 
-    function exclui_produto($params){
+    function excluir_produto($params){
         $pdo = Conexao::getInstance();
         try {
             $pdo->beginTransaction();
@@ -72,13 +88,74 @@ class Produto{
 
             // Confirma a operação
             $pdo->commit();
+            return [
+                'info' => [
+                    [
+                        'registros' => 1,
+                        'cdg_erro'  => 0,
+                        'msg'       => 'Produto excluído com sucesso'
+                    ]
+                ]
+            ];
 
         } catch (PDOException $e) {
             // Desfaz a transação em caso de erro
             if ($pdo->inTransaction()) {
                 $pdo->rollBack();
             }
-            throw new Exception("Erro ao excluir produto: " . $e->getMessage());
+            return [
+                'info' => [
+                    [
+                        'registros' => 0,
+                        'cdg_erro'  => $e->getCode() ?: 1,
+                        'msg'       => $e->getMessage()
+                    ]
+                ]
+            ];
+        }
+    }
+
+    function buscar_produto($params){
+        $pdo = Conexao::getInstance();
+        try {
+
+            $sql = "SELECT * FROM produto WHERE id = :produto_id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':produto_id' => $params['produto_id']
+            ]);
+
+            if ($stmt->rowCount() == 0) {
+                throw new PDOException("Produto não encontrado");
+            }
+
+            // Confirma a operação
+            $dados_produto = $stmt->fetch(PDO::FETCH_ASSOC);
+            return [
+                'info' => [
+                    [
+                        'registros' => 1,
+                        'cdg_erro'  => 0,
+                        'msg'       => 'Produto encontrado com sucesso'
+                    ],
+                'dados' => $dados_produto
+                ]
+            ];
+
+        } catch (PDOException $e) {
+            // Desfaz a transação em caso de erro
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            return [
+                'info' => [
+                    [
+                        'registros' => 0,
+                        'cdg_erro'  => $e->getCode() ?: 1,
+                        'msg'       => $e->getMessage()
+                    ]
+                ]
+            ];
         }
     }
     

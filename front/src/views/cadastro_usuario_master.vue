@@ -31,7 +31,7 @@ async function cadastrar() {
       throw new Error(info?.msg || 'Erro ao cadastrar usuário master.')
     }
 
-    router.push('/login')
+    router.push('/login_master')
   } catch (error) {
     erro.value = error?.message || 'Erro ao realizar cadastro.'
   } finally {
@@ -63,8 +63,7 @@ async function cadastrar() {
 
     <section class="login-panel" aria-labelledby="cadastro-title">
       <div class="login-heading">
-        <p class="eyebrow">Crie sua conta e cadastre seu restaurante</p>
-        <h2 id="cadastro-title">Usuário Chefe</h2>
+        <h2 id="cadastro-title" class="eyebrow">Crie sua conta</h2>
         <p>Preencha os dados para começar.</p>
       </div>
 

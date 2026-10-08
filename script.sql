@@ -7,12 +7,24 @@ create table usuario_master(
 		email varchar(100) not null,
 		senha varchar(256) not null,
 		data_criacao timestamp default now(),
-		cpf varchar(11) not null,
+		cpf_cnpj varchar(20) not null,
 		telefone varchar(20) not null,
-		data_nascimento date not null
-		
+		data_nascimento date not null,
+		ultima_sessao timestamp not null
 );
 
+create table endereco_master(
+     id serial primary key,
+     id_usuario_master int not null,
+     cep varchar(10) not null,
+     logradouro varchar(50) not null,
+     numero varchar(10) not null,
+     complemento varchar(50),
+     bairro varchar(50) not null,
+     cidade varchar(50) not null,
+     estado char(2) not null,
+     foreign key(id_usuario_master) references usuario_master(id)
+);
 
 create table restaurante(
      id serial primary key,
@@ -26,7 +38,7 @@ create table restaurante(
      ativo boolean not null default true,
      url_foto text default 'icone_padrao.jpg',
      cor_principal varchar(10) default '#580b7cda',
-	foreign key(id_usuario_master) references usuario_master(id)
+	 foreign key(id_usuario_master) references usuario_master(id)
 );
 create table endereco(
      id serial primary key,
@@ -49,20 +61,28 @@ create table usuario(
      senha varchar(256) not null,
      nivel int not null,
 	 ativo boolean not null default true,
+	 ultima_sessao timestamp not null,
      --1 utilizador
      --2 adm
-	 --3 dono
      foreign key(id_restaurante) references restaurante(id)
+);
+
+create table categoria(
+	id serial primary key,
+	nome varchar(50) not null,
+	qtd_cadastrados int default 0
 );
 
 create table produto(
      id serial primary key,
+	 id_categoria int,
      id_restaurante int not null,
      codigo_barras VARCHAR(50),
      nome varchar(50) not null,
      preco numeric(15,2),
      ultima_alteracao timestamp default now(),
-     foreign key(id_restaurante) references restaurante(id)
+     foreign key(id_restaurante) references restaurante(id),
+	 foreign key(id_categoria) references categoria(id)
 );
 
 create table comanda(
@@ -70,8 +90,7 @@ create table comanda(
      id_usuario int not null,
      id_restaurante int not null,
      nome_cliente varchar(50) not null,
-     data_abertura date not null,
-     hora_abertura time not null,
+     data_hora_abertura timestamp not null default now(),
      data_hora_fechamento timestamp,
      fechada boolean not null default false,
      valor_total numeric(15,2) default 0,
@@ -95,3 +114,32 @@ create table comanda_lancamento(
      data_hora timestamp not null,
      foreign key(id_comanda) references comanda(id)
 );
+
+
+INSERT INTO categoria (nome)
+VALUES
+    ('Entradas'),
+    ('Petiscos'),
+    ('Porções'),
+    ('Pratos Principais'),
+    ('Carnes'),
+    ('Frango'),
+    ('Peixes e Frutos do Mar'),
+    ('Massas'),
+    ('Hambúrgueres'),
+    ('Sanduíches'),
+    ('Pizzas'),
+    ('Saladas'),
+    ('Sopas e Caldos'),
+    ('Acompanhamentos'),
+    ('Arroz e Feijão'),
+    ('Sobremesas'),
+    ('Bolos e Tortas'),
+    ('Sorvetes'),
+    ('Sucos'),
+    ('Refrigerantes'),
+    ('Águas'),
+    ('Cafés'),
+    ('Chás'),
+    ('Bebidas Alcoólicas'),
+    ('Drinks e Coquetéis');

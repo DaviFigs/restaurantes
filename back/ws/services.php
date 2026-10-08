@@ -41,10 +41,9 @@ require_once BASE_PATH . '/geral/funcoes_diversas.php';
 
 $servicos_sem_auth = [
     'autenticacao',
-    'cadastrar_usuario_master',
-    'cadastrar_restaurante',
+    'cadastrar_usuario_master', //cadastro da pessoa que compra o serviço para o seu restaurante
     'login_usuario_master'
-
+    
 ];
 
 
@@ -226,9 +225,14 @@ try {
 
         'autenticacao'
             => 'autenticacao',
-            
+        'logout'
+            => 'logout',
+             
         'cadastrar_usuario_master'
             => 'cadastrar_usuario_master',
+            
+        'trazer_dados_comanda'
+            => 'prep_trazer_dados_comanda',
 
         'login_usuario_master'
             => 'login_usuario_master',
